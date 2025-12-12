@@ -9,7 +9,7 @@ theme = 'hugo-theme-re-terminal'
     target = 'static/coverage-report'
 
 [params.logo]
-  logoText = 'Dotnet Extensions'
+  logoText = 'Dotnet Configuration'
 
 [menu]
   [[menu.main]]
