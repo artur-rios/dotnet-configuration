@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>false</IncludeSymbols>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>ArturRios.Configuration</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Artur Rios</Authors>
+    <Company>Artur Rios</Company>
+    <Description>Lightweight, composable configuration loader for .NET</Description>
+    <PackageTags>utilities</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/artur-rios/dotnet-configuration</RepositoryUrl>
+    <PackageProjectUrl>https://artur-rios.github.io/dotnet-configuration</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ArturRios.Extensions" Version="1.0.1"/>
+    <PackageReference Include="DotNetEnv" Version="3.1.1"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.1"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
+</Project>
