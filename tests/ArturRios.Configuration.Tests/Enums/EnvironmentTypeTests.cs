@@ -5,7 +5,7 @@ namespace ArturRios.Configuration.Tests.Enums;
 public class EnvironmentTypeTests
 {
     [Fact]
-    public void Should_HaveExpectedNumericValues()
+    public void GivenEnvironmentTypeEnum_WhenCheckingNumericValues_ThenShouldHaveExpectedValues()
     {
         Assert.Equal(0, (int)EnvironmentType.Local);
         Assert.Equal(1, (int)EnvironmentType.Development);
@@ -14,7 +14,7 @@ public class EnvironmentTypeTests
     }
 
     [Fact]
-    public void Should_HaveExpectedNames()
+    public void GivenEnvironmentTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
         Assert.Equal("Local", nameof(EnvironmentType.Local));
         Assert.Equal("Development", nameof(EnvironmentType.Development));

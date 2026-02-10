@@ -8,7 +8,7 @@ namespace ArturRios.Configuration.Tests.Loaders;
 public class ConfigurationLoaderAppSettingsTests
 {
     [Fact]
-    public void Should_Throw_When_BuilderNotProvided()
+    public void GivenNoBuilderProvided_WhenLoadingAppSettings_ThenShouldThrow()
     {
         using var dir = new TestDirectory();
 
@@ -19,7 +19,7 @@ public class ConfigurationLoaderAppSettingsTests
     }
 
     [Fact]
-    public void Should_LoadAppsettings()
+    public void GivenAppSettingsFile_WhenLoadingAppSettings_ThenShouldLoadAppSettings()
     {
         using var dir = new TestDirectory();
 
@@ -38,7 +38,7 @@ public class ConfigurationLoaderAppSettingsTests
     }
 
     [Fact]
-    public void Should_FallbackToDefaultAppSettings_WhenSpecificIsMissing()
+    public void GivenMissingSpecificAppSettingsFile_WhenLoadingAppSettings_ThenShouldFallbackToDefault()
     {
         using var dir = new TestDirectory();
 
@@ -57,7 +57,7 @@ public class ConfigurationLoaderAppSettingsTests
     }
 
     [Fact]
-    public void ShouldNot_LoadAppSettingsWhenNoAppSettingsFilesFound()
+    public void GivenNoAppSettingsFiles_WhenLoadingAppSettings_ThenShouldNotLoadAppSettings()
     {
         using var dir = new TestDirectory();
 

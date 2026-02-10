@@ -7,7 +7,7 @@ namespace ArturRios.Configuration.Tests.Loaders;
 public class ConfigurationLoaderEnvironmentTests
 {
     [Fact]
-    public void Should_LoadEnvFile()
+    public void GivenEnvironmentFile_WhenLoadingEnvironment_ThenShouldLoadEnvFile()
     {
         using var dir = new TestDirectory();
 
@@ -28,7 +28,7 @@ public class ConfigurationLoaderEnvironmentTests
     }
 
     [Fact]
-    public void Should_FallbackToDefaultEnvFile_WhenSpecificIsMissing()
+    public void GivenMissingSpecificEnvFile_WhenLoadingEnvironment_ThenShouldFallbackToDefault()
     {
         using var dir = new TestDirectory();
 
@@ -48,7 +48,7 @@ public class ConfigurationLoaderEnvironmentTests
     }
 
     [Fact]
-    public void ShouldNot_LoadEnvFile_When_NoEnvFilesFound()
+    public void GivenNoEnvFilesFound_WhenLoadingEnvironment_ThenShouldNotLoadEnvFile()
     {
         using var dir = new TestDirectory();
         using var scope = new EnvVarScope();

@@ -19,7 +19,7 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullWhenKeyMissing()
+    public void GivenMissingKey_WhenGettingValue_ThenReturnNull()
     {
         var provider = new SettingsProvider(BuildConfig());
 
@@ -30,7 +30,7 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_ParseBoolFromSettings()
+    public void GivenBoolValuesInSettings_WhenParsingBool_ThenReturnCorrectValue()
     {
         var provider = new SettingsProvider(BuildConfig(("featureA", "true"), ("featureB", "false")));
 
@@ -39,14 +39,14 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullForInvalidBoolValue()
+    public void GivenInvalidBoolValue_WhenParsingBool_ThenReturnNull()
     {
         var provider = new SettingsProvider(BuildConfig(("flag", "maybe")));
         Assert.Null(provider.GetBool("flag"));
     }
 
     [Fact]
-    public void Should_ParseIntFromSettings()
+    public void GivenIntValueInSettings_WhenParsingInt_ThenReturnCorrectValue()
     {
         var provider = new SettingsProvider(BuildConfig(("port", "8080")));
 
@@ -54,7 +54,7 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullForInvalidInt()
+    public void GivenInvalidIntValue_WhenParsingInt_ThenReturnNull()
     {
         var provider = new SettingsProvider(BuildConfig(("port", "eighty")));
 
@@ -62,14 +62,14 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_GetStringFromSettings()
+    public void GivenStringValueInSettings_WhenGettingString_ThenReturnCorrectValue()
     {
         var provider = new SettingsProvider(BuildConfig(("greeting", "hello")));
         Assert.Equal("hello", provider.GetString("greeting"));
     }
 
     [Fact]
-    public void Should_ParseObjectFromSettings()
+    public void GivenJsonObjectInSettings_WhenParsingObject_ThenReturnCorrectValue()
     {
         var provider = new SettingsProvider(BuildConfig(("user", "{\"Name\":\"Ana\",\"Age\":25}")));
         var person = provider.GetObject<Person>("user");
@@ -79,7 +79,7 @@ public class SettingsProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullWhenObjectIsInvalid()
+    public void GivenInvalidJsonObject_WhenParsingObject_ThenReturnNull()
     {
         var provider = new SettingsProvider(BuildConfig(("user", "{bad-json")));
 

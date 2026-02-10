@@ -5,7 +5,7 @@ namespace ArturRios.Configuration.Tests.Enums;
 public class DataSourceTests
 {
     [Fact]
-    public void Should_HaveExpectedNumericValues()
+    public void GivenDataSourceEnum_WhenCheckingNumericValues_ThenShouldHaveExpectedValues()
     {
         Assert.Equal(0, (int)DataSource.Relational);
         Assert.Equal(1, (int)DataSource.NoSql);
@@ -13,7 +13,7 @@ public class DataSourceTests
     }
 
     [Fact]
-    public void Should_HaveExpectedNames()
+    public void GivenDataSourceEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
         Assert.Equal("Relational", nameof(DataSource.Relational));
         Assert.Equal("NoSql", nameof(DataSource.NoSql));

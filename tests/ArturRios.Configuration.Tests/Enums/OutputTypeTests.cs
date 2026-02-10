@@ -5,7 +5,7 @@ namespace ArturRios.Configuration.Tests.Enums;
 public class OutputTypeTests
 {
     [Fact]
-    public void Should_HaveExpectedNumericValues()
+    public void GivenOutputTypeEnum_WhenCheckingNumericValues_ThenShouldHaveExpectedValues()
     {
         Assert.Equal(0, (int)OutputType.Void);
         Assert.Equal(1, (int)OutputType.Default);
@@ -15,7 +15,7 @@ public class OutputTypeTests
     }
 
     [Fact]
-    public void Should_HaveExpectedNames()
+    public void GivenOutputTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
         Assert.Equal("Void", nameof(OutputType.Void));
         Assert.Equal("Default", nameof(OutputType.Default));

@@ -6,7 +6,7 @@ namespace ArturRios.Configuration.Tests.Providers;
 public class EnvironmentProviderTests
 {
     [Fact]
-    public void Should_ReturnNull_When_KeyMissing()
+    public void GivenMissingEnvironmentVariable_WhenGettingValue_ThenReturnNull()
     {
         const string key = "MISSING_KEY";
 
@@ -23,7 +23,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ParseBoolFromEnvironmentVariable()
+    public void GivenBoolEnvironmentVariables_WhenParsingBool_ThenReturnCorrectValue()
     {
         const string keyTrue = "TRUE_KEY";
         const string keyFalse = "FALSE_KEY";
@@ -40,7 +40,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullForInvalidBoolValues()
+    public void GivenInvalidBoolEnvironmentVariable_WhenParsingBool_ThenReturnNull()
     {
         const string key = "INVALID_BOOL_KEY";
 
@@ -54,7 +54,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ParseIntFromEnvironmentVariable()
+    public void GivenIntEnvironmentVariable_WhenParsingInt_ThenReturnCorrectValue()
     {
         const string key = "INT_KEY";
 
@@ -68,7 +68,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullForInvalidInt()
+    public void GivenInvalidIntEnvironmentVariable_WhenParsingInt_ThenReturnNull()
     {
         const string key = "INVALID_INT_KEY";
 
@@ -82,7 +82,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_GetString()
+    public void GivenStringEnvironmentVariable_WhenGettingString_ThenReturnCorrectValue()
     {
         const string key = "STRING_KEY";
 
@@ -96,7 +96,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ParseObjectFromEnvironmentVariable()
+    public void GivenJsonObjectEnvironmentVariable_WhenParsingObject_ThenReturnCorrectValue()
     {
         const string key = "VALID_OBJECT_KEY";
 
@@ -114,7 +114,7 @@ public class EnvironmentProviderTests
     }
 
     [Fact]
-    public void Should_ReturnNullWhenObjectIsInvalid()
+    public void GivenInvalidJsonObject_WhenParsingObject_ThenReturnNull()
     {
         const string key = "INVALID_OBJECT_KEY";
 

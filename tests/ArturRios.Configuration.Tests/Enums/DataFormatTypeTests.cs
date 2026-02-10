@@ -5,7 +5,7 @@ namespace ArturRios.Configuration.Tests.Enums;
 public class DataFormatTypeTests
 {
     [Fact]
-    public void Should_HaveExpectedNumericValues()
+    public void GivenDataFormatTypeEnum_WhenCheckingNumericValues_ThenShouldHaveExpectedValues()
     {
         Assert.Equal(0, (int)DataFormatType.Json);
         Assert.Equal(1, (int)DataFormatType.ProtoBuf);
@@ -15,7 +15,7 @@ public class DataFormatTypeTests
     }
 
     [Fact]
-    public void Should_HaveExpectedNames()
+    public void GivenDataFormatTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
         Assert.Equal("Json", nameof(DataFormatType.Json));
         Assert.Equal("ProtoBuf", nameof(DataFormatType.ProtoBuf));

@@ -5,7 +5,7 @@ namespace ArturRios.Configuration.Tests.Enums;
 public class ConfigurationSourceTypeTests
 {
     [Fact]
-    public void Should_HaveExpectedNumericValues()
+    public void GivenConfigurationSourceTypeEnum_WhenCheckingNumericValues_ThenShouldHaveExpectedValues()
     {
         Assert.Equal(0, (int)ConfigurationSourceType.EnvFile);
         Assert.Equal(1, (int)ConfigurationSourceType.AppSettings);
@@ -13,7 +13,7 @@ public class ConfigurationSourceTypeTests
     }
 
     [Fact]
-    public void Should_HaveExpectedNames()
+    public void GivenConfigurationSourceTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
         Assert.Equal("EnvFile", nameof(ConfigurationSourceType.EnvFile));
         Assert.Equal("AppSettings", nameof(ConfigurationSourceType.AppSettings));
