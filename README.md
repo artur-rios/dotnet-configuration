@@ -1,8 +1,8 @@
 ﻿# ArturRios.Configuration
 
+[![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
-[![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
 
 Lightweight, composable configuration loader for .NET. Load settings from JSON files (including appsettings),
 environment variables, .env files, and merge them with clear precedence. Built on Microsoft.Extensions.Configuration
