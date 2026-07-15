@@ -1,5 +1,9 @@
 ﻿# ArturRios.Configuration
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
+[![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
+
 Lightweight, composable configuration loader for .NET. Load settings from JSON files (including appsettings),
 environment variables, .env files, and merge them with clear precedence. Built on Microsoft.Extensions.Configuration
 with a simple, focused API.
@@ -8,16 +12,12 @@ with a simple, focused API.
 - NuGet: ArturRios.Configuration
 - Minimal dependencies: `ArturRios.Extensions`, `DotNetEnv`, `Microsoft.Extensions.*`.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-[![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
-[![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
-
 ## Features
 
 - Unified loader: `ConfigurationLoader` to compose multiple sources.
 - Providers:
-    - `EnvironmentProvider` for environment-specific logic (e.g., Development/Production).
-    - `SettingsProvider` for layered settings.
+  - `EnvironmentProvider` for environment-specific logic (e.g., Development/Production).
+  - `SettingsProvider` for layered settings.
 - Source types and formats via enums: `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
 - Built on `Microsoft.Extensions.Configuration`, supports JSON, environment variables, .env files.
 - Simple precedence model: later-added sources override earlier ones.
@@ -27,19 +27,19 @@ with a simple, focused API.
 
 NuGet CLI:
 
-```
+```cmd
 nuget install ArturRios.Configuration
 ```
 
 Dotnet CLI:
 
-```
+```cmd
 dotnet add package ArturRios.Configuration
 ```
 
 PackageReference:
 
-```
+```xml
 <ItemGroup>
   <PackageReference Include="ArturRios.Configuration" Version="x.y.z" />
 </ItemGroup>
@@ -47,13 +47,13 @@ PackageReference:
 
 Git submodule (alternative):
 
-```
+```cmd
 git submodule add https://github.com/artur-rios/dotnet-configuration.git external/dotnet-configuration
 ```
 
 Then add a project reference:
 
-```
+```xml
 <ItemGroup>
   <ProjectReference Include="external/dotnet-configuration/src/ArturRios.Configuration.csproj" />
 </ItemGroup>
@@ -107,8 +107,8 @@ var loggingJson = env.GetString("LOGGING__JSON");
 ## Advanced usage
 
 - Folder conventions used by the loader:
-    - `.env` files under `Environments/.env.<EnvironmentName>`, fallback to `Environments/.env.local`.
-    - `appsettings` JSON under `Settings/appsettings.<EnvironmentName>.json`, fallback to
+  - `.env` files under `Environments/.env.<EnvironmentName>`, fallback to `Environments/.env.local`.
+  - `appsettings` JSON under `Settings/appsettings.<EnvironmentName>.json`, fallback to
       `Settings/appsettings.local.json`.
 - Precedence: when building `IConfiguration`, sources are added in the order you call them on the same
   `IConfigurationBuilder`. JSON files added later override earlier ones.
@@ -143,7 +143,7 @@ var settings = configuration.Get<AppSettings>();
 - `SettingsProvider` (in `src/Providers/SettingsProvider.cs`): read and parse configuration values to
   bool/int/string/object.
 - Enums (in `src/Enums/`):
-    - `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
+  - `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
 
 ## Extensibility
 
@@ -166,11 +166,6 @@ public static class ConfigurationLoaderExtensions
     }
 }
 ```
-
-## Contributing
-
-- Issues and PRs are welcome. If you plan a larger change, open an issue first with a short proposal.
-- Coding style: follow existing conventions; keep APIs small and focused.
 
 ## Build, test and publish
 
