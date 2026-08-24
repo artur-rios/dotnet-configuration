@@ -1,10 +1,11 @@
-﻿using ArturRios.Configuration.Loaders;
+using ArturRios.Configuration.Loaders;
 using ArturRios.Configuration.Tests.TestHelpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace ArturRios.Configuration.Tests.Loaders;
 
+[Trait("Category", "Functional")]
 public class ConfigurationLoaderAppSettingsTests
 {
     [Fact]

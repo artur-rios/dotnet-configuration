@@ -1,7 +1,8 @@
-﻿using ArturRios.Configuration.Enums;
+using ArturRios.Configuration.Enums;
 
 namespace ArturRios.Configuration.Tests.Enums;
 
+[Trait("Category", "Unit")]
 public class EnvironmentTypeTests
 {
     [Fact]

@@ -1,4 +1,4 @@
-﻿# ArturRios.Configuration
+# ArturRios.Configuration
 
 [![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
@@ -110,6 +110,11 @@ var loggingJson = env.GetString("LOGGING__JSON");
   - `.env` files under `Environments/.env.<EnvironmentName>`, fallback to `Environments/.env.local`.
   - `appsettings` JSON under `Settings/appsettings.<EnvironmentName>.json`, fallback to
       `Settings/appsettings.local.json`.
+
+File names are matched **without regard to case**, so `.env.Development` and `.env.development` — or
+`appsettings.Local.json` and `appsettings.local.json` — are equally acceptable on every platform. Matching
+on exact case only resolved on Windows and silently found nothing on a case-sensitive file system.
+
 - Precedence: when building `IConfiguration`, sources are added in the order you call them on the same
   `IConfigurationBuilder`. JSON files added later override earlier ones.
 - Binding to POCOs via Microsoft.Extensions.Configuration:
@@ -167,6 +172,31 @@ public static class ConfigurationLoaderExtensions
 }
 ```
 
+## Acknowledgements
+
+- Built on Microsoft.Extensions.Configuration
+- Uses DotNetEnv for .env support
+- Thanks to the .NET OSS community
+
+## Testing
+
+The test suite is xUnit, and every test is named with the Given / When / Then pattern. Every test class
+carries a `Category` trait, so the two kinds can be run — and reported — separately:
+
+```bash
+dotnet test src/ArturRios.Configuration.sln --filter "Category=Unit"
+dotnet test src/ArturRios.Configuration.sln --filter "Category=Functional"
+```
+
+Unit tests exercise the code in isolation against test doubles.
+Functional tests drive the loader over real .env and appsettings files written to a temporary directory on disk.
+CI runs the two as separate jobs, and both must pass before a pull request can be merged.
+
+## Versioning
+
+Semantic Versioning (SemVer). Breaking changes result in a new major version. New methods or non-breaking behavior
+changes increment the minor version; fixes or tweaks increment the patch.
+
 ## Build, test and publish
 
 Use the official [.NET CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/) to build, test and publish the project
@@ -176,18 +206,7 @@ If you want, optional helper toolsets I built to facilitate these tasks are avai
 - [Dotnet Tools](https://github.com/artur-rios/dotnet-tools)
 - [Python Dotnet Tools](https://github.com/artur-rios/python-dotnet-tools)
 
-## Versioning
-
-Semantic Versioning (SemVer). Breaking changes result in a new major version. New methods or non-breaking behavior
-changes increment the minor version; fixes or tweaks increment the patch.
-
 ## Legal Details
 
 This project is licensed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License). A copy of the license is
 available at [LICENSE](./LICENSE) in the repository.
-
-## Acknowledgements
-
-- Built on Microsoft.Extensions.Configuration
-- Uses DotNetEnv for .env support
-- Thanks to the .NET OSS community

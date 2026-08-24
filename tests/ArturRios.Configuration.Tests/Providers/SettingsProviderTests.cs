@@ -1,9 +1,10 @@
-﻿using ArturRios.Configuration.Providers;
+using ArturRios.Configuration.Providers;
 using ArturRios.Configuration.Tests.TestHelpers;
 using Microsoft.Extensions.Configuration;
 
 namespace ArturRios.Configuration.Tests.Providers;
 
+[Trait("Category", "Unit")]
 public class SettingsProviderTests
 {
     private static IConfiguration BuildConfig(params (string Key, string? Value)[] items)
