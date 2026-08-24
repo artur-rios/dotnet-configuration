@@ -1,8 +1,9 @@
-﻿using ArturRios.Configuration.Providers;
+using ArturRios.Configuration.Providers;
 using ArturRios.Configuration.Tests.TestHelpers;
 
 namespace ArturRios.Configuration.Tests.Providers;
 
+[Trait("Category", "Unit")]
 public class EnvironmentProviderTests
 {
     [Fact]

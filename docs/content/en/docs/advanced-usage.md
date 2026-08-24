@@ -13,6 +13,11 @@ Conventions used by the loader:
 - `appsettings` JSON under `Settings/appsettings.<EnvironmentName>.json`, fallback to
   `Settings/appsettings.local.json`.
 
+File names are matched **without regard to case**, so `.env.Development` and `.env.development` — or
+`appsettings.Local.json` and `appsettings.local.json` — are equally acceptable on every platform. Matching
+on exact case only resolved on Windows and silently found nothing on a case-sensitive file system.
+
+
 ## Precedence
 
 When building `IConfiguration`, sources are added in the order you call them on the same
