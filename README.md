@@ -1,7 +1,7 @@
 # ArturRios.Configuration
 
 [![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/artur-rios/dotnet-configuration/blob/main/LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
 
 Lightweight, composable configuration loader for .NET. Load settings from JSON files (including appsettings),
@@ -16,9 +16,11 @@ with a simple, focused API.
 
 - Unified loader: `ConfigurationLoader` to compose multiple sources.
 - Providers:
-  - `EnvironmentProvider` for environment-specific logic (e.g., Development/Production).
-  - `SettingsProvider` for layered settings.
-- Source types and formats via enums: `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
+  - `EnvironmentProvider` reads OS environment variables as bool, int, string or a JSON-deserialized object.
+  - `SettingsProvider` reads the same typed values from any `IConfiguration`. `GetObject<T>` deserializes a value
+    that is itself a JSON string; an appsettings section has no value of its own and reads as `null`, so bind
+    sections with `configuration.GetSection(key).Get<T>()` instead.
+- Shared enums: `ConfigurationSourceType`, `DataFormatType`, `DataSource`, `EnvironmentType`, `OutputType`.
 - Built on `Microsoft.Extensions.Configuration`, supports JSON, environment variables, .env files.
 - Simple precedence model: later-added sources override earlier ones.
 - Extensible: implement your own provider or source.
@@ -106,10 +108,14 @@ var loggingJson = env.GetString("LOGGING__JSON");
 
 ## Advanced usage
 
-- Folder conventions used by the loader:
+- Folder conventions used by the loader, relative to the application's base directory
+  (`AppDomain.CurrentDomain.BaseDirectory`) unless you pass a `basePath` to the constructor:
   - `.env` files under `Environments/.env.<EnvironmentName>`, fallback to `Environments/.env.local`.
   - `appsettings` JSON under `Settings/appsettings.<EnvironmentName>.json`, fallback to
       `Settings/appsettings.local.json`.
+
+  The files must therefore be copied to the build output (for example with `CopyToOutputDirectory`) when the
+  default base directory is used.
 
 File names are matched **without regard to case**, so `.env.Development` and `.env.development` — or
 `appsettings.Local.json` and `appsettings.local.json` — are equally acceptable on every platform. Matching
@@ -117,6 +123,10 @@ on exact case only resolved on Windows and silently found nothing on a case-sens
 
 - Precedence: when building `IConfiguration`, sources are added in the order you call them on the same
   `IConfigurationBuilder`. JSON files added later override earlier ones.
+- `.env` files never override the real environment: `LoadEnvironment()` loads one file (`.env.<EnvironmentName>`,
+  else `.env.local`) and leaves every variable the process already has untouched, so values injected by the
+  deployment win over a shipped `.env` file. Within the file, a repeated key keeps its first value, and `${VAR}`
+  resolves to the value in effect. See the docs' Advanced usage page.
 - Binding to POCOs via Microsoft.Extensions.Configuration:
 
 ```csharp
@@ -131,43 +141,45 @@ public sealed class ConnectionStrings
     public string? Default { get; set; }
 }
 
-var configuration = new ConfigurationBuilder()
-    // if you have additional files, add them here; LoadAppSettings adds the environment-specific file
-    .Build();
+var builder = new ConfigurationBuilder();
+// add any other sources here; LoadAppSettings adds the environment-specific file
+new ConfigurationLoader(builder, "Development").LoadAppSettings();
 
-// After LoadAppSettings on the builder
+var configuration = builder.Build();
 var settings = configuration.Get<AppSettings>();
 ```
 
 ## API overview
 
-- `ConfigurationLoader` (in `src/Loaders/ConfigurationLoader.cs`): fluent-style helpers to add `.env` and
-  `appsettings.<env>.json` using folder conventions, backing `IConfigurationBuilder`.
+- `ConfigurationLoader` (in `src/Loaders/ConfigurationLoader.cs`): `LoadEnvironment()` loads the `.env` file into the
+  process environment, and `LoadAppSettings()` adds `appsettings.<env>.json` to the `IConfigurationBuilder` passed to
+  the constructor, both following the folder conventions.
 - `EnvironmentProvider` (in `src/Providers/EnvironmentProvider.cs`): read and parse OS environment variables to
   bool/int/string/object.
 - `SettingsProvider` (in `src/Providers/SettingsProvider.cs`): read and parse configuration values to
-  bool/int/string/object.
+  bool/int/string/object. An object is deserialized from a JSON string value, not bound from a section.
 - Enums (in `src/Enums/`):
-  - `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
+  - `ConfigurationSourceType`, `DataFormatType`, `DataSource`, `EnvironmentType`, `OutputType`.
 
 ## Extensibility
 
 Create a custom source or provider:
 
-1. Define a new provider class (see `src/Providers/Interfaces/` for guidance).
-2. Extend your configuration loader or builder with additional sources as needed.
+1. Define a new provider class that implements `IConfigurationProvider` (in `src/Providers/Interfaces/`).
+2. Add further sources to the same `IConfigurationBuilder` you passed to `ConfigurationLoader`; the loader does not
+   expose the builder, so extend the builder rather than the loader.
 3. Respect precedence by adding sources in order.
 
 Example sketch:
 
 ```csharp
-public static class ConfigurationLoaderExtensions
+public static class ConfigurationBuilderExtensions
 {
-    public static ConfigurationLoader AddMySource(this ConfigurationLoader loader, string endpoint)
+    public static IConfigurationBuilder AddMySource(this IConfigurationBuilder builder, string endpoint)
     {
-        // fetch data from endpoint, add it to the underlying IConfigurationBuilder
+        // fetch data from endpoint and add it as a source, e.g. builder.AddInMemoryCollection(values)
         // ...
-        return loader;
+        return builder;
     }
 }
 ```
@@ -178,56 +190,17 @@ public static class ConfigurationLoaderExtensions
 - Uses DotNetEnv for .env support
 - Thanks to the .NET OSS community
 
-## Testing
+## Changelog
 
-The test suite is xUnit, and every test is named with the Given / When / Then pattern. Every test class
-carries a `Category` trait, so the two kinds can be run — and reported — separately:
+Notable changes in each release are recorded in [CHANGELOG.md](https://github.com/artur-rios/dotnet-configuration/blob/main/CHANGELOG.md). Releases follow
+[Semantic Versioning](https://semver.org/).
 
-```bash
-dotnet test src/ArturRios.Configuration.sln --filter "Category=Unit"
-dotnet test src/ArturRios.Configuration.sln --filter "Category=Functional"
-```
+## Contributing
 
-Unit tests exercise the code in isolation against test doubles.
-Functional tests drive the loader over real .env and appsettings files written to a temporary directory on disk.
-CI runs the two as separate jobs, and both must pass before a pull request can be merged.
-
-## Branching and releases
-
-`develop` is the integration branch and the base for all new work; `main` only holds released code.
-
-1. Branch off `develop` — `feature/<name>` for features, `fix/<name>` for fixes (`chore/`, `refactor/`, `docs/`,
-   `ci/`, `test/`, `perf/` and `build/` are accepted too) — and open a pull request back into `develop`.
-2. To release, cut `release/<version>` from `develop`, set `<Version>` in `src/ArturRios.Configuration.csproj` to that version
-   and open a pull request into `main`. Only `release/*` branches can be merged into `main`.
-3. Once it is merged, tag the merge commit on `main` with the version. Pushing the tag publishes the package to
-   nuget.org and GitHub Packages:
-
-   ```bash
-   git switch main && git pull
-   git tag <version> && git push origin <version>
-   ```
-
-4. Open a pull request from `main` into `develop` to bring the release back into the integration branch.
-
-Pull requests into `develop` and `main` must pass the tests and the branch policy check. Only the repository owner can
-push version tags, and the publish workflow rejects tags that do not point at a commit on `main`.
-
-## Versioning
-
-Semantic Versioning (SemVer). Breaking changes result in a new major version. New methods or non-breaking behavior
-changes increment the minor version; fixes or tweaks increment the patch.
-
-## Build, test and publish
-
-Use the official [.NET CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/) to build, test and publish the project
-and Git for source control.
-If you want, optional helper toolsets I built to facilitate these tasks are available:
-
-- [Dotnet Tools](https://github.com/artur-rios/dotnet-tools)
-- [Python Dotnet Tools](https://github.com/artur-rios/python-dotnet-tools)
+Building from source, running the tests, the branching model and the release process are described in
+[CONTRIBUTING.md](https://github.com/artur-rios/dotnet-configuration/blob/main/CONTRIBUTING.md).
 
 ## Legal Details
 
 This project is licensed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License). A copy of the license is
-available at [LICENSE](./LICENSE) in the repository.
+available at [LICENSE](https://github.com/artur-rios/dotnet-configuration/blob/main/LICENSE) in the repository.
