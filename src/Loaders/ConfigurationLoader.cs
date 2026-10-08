@@ -42,6 +42,13 @@ public class ConfigurationLoader
     private static readonly Lazy<ILoggerFactory> FallbackLoggerFactory =
         new(() => LoggerFactory.Create(builder => builder.AddConsole()), isThreadSafe: true);
 
+    /// <summary>
+    /// Loads a <c>.env</c> file without overwriting variables the process already has, so the real environment
+    /// (what the deployment injected) wins over the file. DotNetEnv's own default overwrites them, which let a
+    /// shipped <c>.env.local</c> override deployment-injected values even in Production.
+    /// </summary>
+    private static readonly LoadOptions NoClobber = new(clobberExistingVars: false);
+
     private readonly string _basePath;
     private readonly IConfigurationBuilder? _configurationBuilder;
     private readonly string _environmentName;
@@ -89,8 +96,16 @@ public class ConfigurationLoader
     /// Loads environment variables from a specific <c>.env</c> file based on the configured environment.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// It looks for <c>Environments/.env.&lt;environment&gt;</c> and falls back to <c>Environments/.env.local</c> if not found.
-    /// The file name is matched without regard to case.
+    /// Only one file is loaded. The file name is matched without regard to case.
+    /// </para>
+    /// <para>
+    /// Variables the process already has win over the file: a key that is already set is left alone, so values
+    /// injected by the deployment are never overwritten by a <c>.env</c> file shipped with the build. The same rule
+    /// applies within the file, so a key repeated in it keeps its first value, and a <c>${VAR}</c> reference
+    /// resolves to the value that is actually in effect.
+    /// </para>
     /// </remarks>
     public void LoadEnvironment()
     {
@@ -102,7 +117,7 @@ public class ConfigurationLoader
         {
             _logger.LogInformation("Loading variables for {EnvironmentName} environment...", _environmentName);
 
-            Env.Load(envFile);
+            Env.Load(envFile, NoClobber);
         }
         else if (defaultEnvFile is not null)
         {
@@ -110,7 +125,7 @@ public class ConfigurationLoader
                 "Could not find variables for {EnvironmentName} environment. Loading default environment {DefaultEnvironmentName} instead...",
                 _environmentName, DefaultEnvironmentName);
 
-            Env.Load(defaultEnvFile);
+            Env.Load(defaultEnvFile, NoClobber);
         }
         else
         {
