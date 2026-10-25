@@ -1,8 +1,10 @@
 # ArturRios.Configuration
 
-[![Docs](https://img.shields.io/badge/docs-website-blue)](https://artur-rios.github.io/dotnet-configuration)
+[![Docs](https://img.shields.io/badge/docs-website-blue)](https://docs.artur-rios.tech/dotnet-configuration)
 [![License: Attribution](https://img.shields.io/badge/License-Attribution-blue.svg)](https://github.com/artur-rios/dotnet-configuration/blob/main/LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
+
+This repository lives at <https://git.techcraftsmen.net/artur-rios/dotnet-configuration>. The GitHub repository is a read-only mirror of it.
 
 Lightweight, composable configuration loader for .NET. Load settings from JSON files (including appsettings),
 environment variables, .env files, and merge them with clear precedence. Built on Microsoft.Extensions.Configuration

@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   it before loading. (DotNetEnv `clobberExistingVars: false`.)
 - `SettingsProvider` rejects a null `IConfiguration` with `ArgumentNullException` when it is constructed, like
   `ConfigurationLoader` does for its builder, instead of failing with `NullReferenceException` on the first read.
+- The package's project URL is the documentation site's new address, `https://docs.artur-rios.tech/dotnet-configuration`, since the
+  site moved from GitHub Pages.
 
 ### Fixed
 
