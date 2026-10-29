@@ -18,7 +18,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>utilities</PackageTags>
     <RepositoryUrl>https://github.com/artur-rios/dotnet-configuration</RepositoryUrl>
-    <Version>1.2.0</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ArturRios.Extensions" Version="1.4.0" />
