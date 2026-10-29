@@ -18,9 +18,20 @@ environment variables, .env files, and merge them with clear precedence. Built o
 
 - Unified loader: `ConfigurationLoader` to compose multiple sources.
 - Providers:
-  - `EnvironmentProvider` for environment-specific logic (e.g., Development/Production).
-  - `SettingsProvider` for layered settings.
-- Source types and formats via enums: `ConfigurationSourceType`, `DataFormatType`, `EnvironmentType`, `OutputType`.
+  - `EnvironmentProvider` reads OS environment variables as bool, int, string or a JSON-deserialized object.
+  - `SettingsProvider` reads the same typed values from any `IConfiguration`.
+- Shared enums: `ConfigurationSourceType`, `DataFormatType`, `DataSource`, `EnvironmentType`, `OutputType`.
 - Built on `Microsoft.Extensions.Configuration`, supports JSON, environment variables, .env files.
 - Simple precedence model: later-added sources override earlier ones.
 - Extensible: implement your own provider or source.
+
+## Acknowledgements
+
+- Built on Microsoft.Extensions.Configuration
+- Uses DotNetEnv for .env support
+- Thanks to the .NET OSS community
+
+## Legal Details
+
+This project is licensed under the [Artur Rios Attribution License](https://github.com/artur-rios/dotnet-configuration/blob/main/LICENSE).
+It is free and open source: you may view, use, fork, modify, and extend it, provided you credit the author, Artur Rios, with a link to [artur-rios.tech](https://artur-rios.tech) or [github.com/artur-rios](https://github.com/artur-rios).

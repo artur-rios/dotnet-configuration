@@ -7,20 +7,21 @@ description: >-
 
 Create a custom source or provider:
 
-1. Define a new provider class (see `src/Providers/Interfaces/` for guidance).
-2. Extend your configuration loader or builder with additional sources as needed.
+1. Define a new provider class that implements `IConfigurationProvider` (in `src/Providers/Interfaces/`).
+2. Add further sources to the same `IConfigurationBuilder` you passed to `ConfigurationLoader`; the loader does not
+   expose the builder, so extend the builder rather than the loader.
 3. Respect precedence by adding sources in order.
 
 Example sketch:
 
 ```csharp
-public static class ConfigurationLoaderExtensions
+public static class ConfigurationBuilderExtensions
 {
-    public static ConfigurationLoader AddMySource(this ConfigurationLoader loader, string endpoint)
+    public static IConfigurationBuilder AddMySource(this IConfigurationBuilder builder, string endpoint)
     {
-        // fetch data from endpoint, add it to the underlying IConfigurationBuilder
+        // fetch data from endpoint and add it as a source, e.g. builder.AddInMemoryCollection(values)
         // ...
-        return loader;
+        return builder;
     }
 }
 ```

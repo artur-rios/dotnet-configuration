@@ -86,4 +86,22 @@ public class SettingsProviderTests
 
         Assert.Null(provider.GetObject<Person>("user"));
     }
+
+    [Fact]
+    public void GivenNullConfiguration_WhenConstructing_ThenThrowArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => new SettingsProvider(null!));
+
+        Assert.Equal("configuration", exception.ParamName);
+    }
+
+    [Fact]
+    public void GivenObjectSection_WhenParsingObject_ThenReturnNullAsDocumented()
+    {
+        // A section has no value of its own, only children; GetObject reads a JSON string value.
+        var provider = new SettingsProvider(BuildConfig(("user:Name", "Ana"), ("user:Age", "25")));
+
+        Assert.Null(provider.GetObject<Person>("user"));
+        Assert.Equal("Ana", provider.GetString("user:Name"));
+    }
 }
