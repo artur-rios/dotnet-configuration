@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - `DotNetEnv` updated from 3.1.1 to 3.2.0.
+- `ArturRios.Extensions` updated from 1.4.0 to 1.4.1.
+- `Microsoft.Extensions.*` references updated from 10.0.11 to 10.0.15.
 
 ## [2.0.0] - 2026-10-29
 
