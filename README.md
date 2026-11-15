@@ -1,16 +1,8 @@
 # ArturRios.Configuration
 
-> [!NOTE]
-> This is the real, open-source code of dotnet-configuration. Its home is Forgejo, at
-> https://git.techcraftsmen.net/artur-rios/dotnet-configuration; the copy on GitHub is a read-only mirror, for viewing only, and
-> its issues and pull requests are not followed. If you want to contribute, email me at
-> arturdev@duck.com.
-
 [![Docs](https://img.shields.io/badge/docs-website-blue)](https://docs.artur-rios.tech/dotnet-configuration)
 [![License: Attribution](https://img.shields.io/badge/License-Attribution-blue.svg)](https://github.com/artur-rios/dotnet-configuration/blob/main/LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/ArturRios.Configuration.svg)](https://www.nuget.org/packages/ArturRios.Configuration)
-
-This repository lives at <https://git.techcraftsmen.net/artur-rios/dotnet-configuration>. The GitHub repository is a read-only mirror of it.
 
 Lightweight, composable configuration loader for .NET. Load settings from JSON files (including appsettings),
 environment variables, .env files, and merge them with clear precedence. Built on Microsoft.Extensions.Configuration
@@ -207,6 +199,9 @@ Notable changes in each release are recorded in [CHANGELOG.md](https://github.co
 
 Building from source, running the tests, the branching model and the release process are described in
 [CONTRIBUTING.md](https://github.com/artur-rios/dotnet-configuration/blob/main/CONTRIBUTING.md).
+
+The GitHub repository is a read-only mirror for the real, open-source code of dotnet-configuration. Its home is Forgejo, at
+https://git.techcraftsmen.net/artur-rios/dotnet-configuration. If you want to contribute, e-mail me at arturdev@duck.com.
 
 ## Legal Details
 
