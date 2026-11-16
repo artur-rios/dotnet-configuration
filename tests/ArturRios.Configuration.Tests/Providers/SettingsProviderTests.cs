@@ -1,12 +1,33 @@
 using ArturRios.Configuration.Providers;
 using ArturRios.Configuration.Tests.TestHelpers;
 using Microsoft.Extensions.Configuration;
+using IConfigurationProvider = ArturRios.Configuration.Providers.Interfaces.IConfigurationProvider;
 
 namespace ArturRios.Configuration.Tests.Providers;
 
 [Trait("Category", "Unit")]
-public class SettingsProviderTests
+public class SettingsProviderTests : ConfigurationProviderContract
 {
+    protected override IConfigurationProvider ProviderWith(string key, string value) =>
+        new SettingsProvider(BuildConfig((key, value)));
+
+    [Fact]
+    public void GivenAnEmptyValue_WhenGettingString_ThenTheEmptyStringIsReturned()
+    {
+        var provider = new SettingsProvider(BuildConfig(("empty", "")));
+
+        Assert.Equal(string.Empty, provider.GetString("empty"));
+    }
+
+    [Fact]
+    public void GivenAKeyInAnotherCasing_WhenGettingString_ThenTheValueIsFound()
+    {
+        // IConfiguration keys are case-insensitive.
+        var provider = new SettingsProvider(BuildConfig(("Api:Key", "secret")));
+
+        Assert.Equal("secret", provider.GetString("API:KEY"));
+    }
+
     private static IConfiguration BuildConfig(params (string Key, string? Value)[] items)
     {
         var dict = new Dictionary<string, string?>();
