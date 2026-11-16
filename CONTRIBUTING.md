@@ -26,7 +26,7 @@ dotnet build src/ArturRios.Configuration.sln
 
 ## Testing
 
-The test suite is xUnit, and every test is named with the Given / When / Then pattern. Every test class
+The test suite is xUnit v3, and every test is named with the Given / When / Then pattern. Every test class
 carries a `Category` trait, so the two kinds can be run — and reported — separately:
 
 ```bash
