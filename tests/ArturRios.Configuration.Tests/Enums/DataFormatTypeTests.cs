@@ -18,10 +18,10 @@ public class DataFormatTypeTests
     [Fact]
     public void GivenDataFormatTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
-        Assert.Equal("Json", nameof(DataFormatType.Json));
-        Assert.Equal("ProtoBuf", nameof(DataFormatType.ProtoBuf));
-        Assert.Equal("Xml", nameof(DataFormatType.Xml));
-        Assert.Equal("PlainText", nameof(DataFormatType.PlainText));
-        Assert.Equal("PlainTextWithSeparator", nameof(DataFormatType.PlainTextWithSeparator));
+        // Every name, in value order: a member added, removed, renamed or moved fails the test. (nameof
+        // compared a name with itself, so it could never fail.)
+        Assert.Equal(
+            new[] { "Json", "ProtoBuf", "Xml", "PlainText", "PlainTextWithSeparator" },
+            Enum.GetNames<DataFormatType>());
     }
 }
