@@ -29,7 +29,9 @@ public class ConfigurationLoaderFileNameCasingTests
 
         new ConfigurationLoader(builder, "Development", directory.Root, Logger).LoadAppSettings();
 
-        Assert.Equal("fallback", builder.Build()["A"]);
+        using var config = (ConfigurationRoot)builder.Build();
+
+        Assert.Equal("fallback", config["A"]);
     }
 
     [Theory]
@@ -46,7 +48,9 @@ public class ConfigurationLoaderFileNameCasingTests
 
         new ConfigurationLoader(builder, "Development", directory.Root, Logger).LoadAppSettings();
 
-        Assert.Equal("environment", builder.Build()["A"]);
+        using var config = (ConfigurationRoot)builder.Build();
+
+        Assert.Equal("environment", config["A"]);
     }
 
     [Fact]
@@ -61,7 +65,9 @@ public class ConfigurationLoaderFileNameCasingTests
 
         new ConfigurationLoader(builder, "Development", directory.Root, Logger).LoadAppSettings();
 
-        Assert.Equal("environment", builder.Build()["A"]);
+        using var config = (ConfigurationRoot)builder.Build();
+
+        Assert.Equal("environment", config["A"]);
     }
 
     [Fact]
@@ -136,5 +142,22 @@ public class ConfigurationLoaderFileNameCasingTests
     public void GivenNoConfigurationBuilder_WhenConstructing_ThenArgumentNullExceptionIsThrown()
     {
         Assert.Throws<ArgumentNullException>(() => new ConfigurationLoader((IConfigurationBuilder)null!, "Local"));
+    }
+    [Theory]
+    [InlineData("development")]
+    [InlineData("DEVELOPMENT")]
+    public void GivenAnEnvironmentNameInAnotherCasing_WhenLoadingSettings_ThenTheFileIsFound(string environmentName)
+    {
+        using var directory = new TestDirectory();
+
+        directory.WriteFile("Settings/appsettings.Development.json", """{ "A": "environment" }""");
+
+        var builder = new ConfigurationBuilder();
+
+        new ConfigurationLoader(builder, environmentName, directory.Root, Logger).LoadAppSettings();
+
+        using var config = (ConfigurationRoot)builder.Build();
+
+        Assert.Equal("environment", config["A"]);
     }
 }

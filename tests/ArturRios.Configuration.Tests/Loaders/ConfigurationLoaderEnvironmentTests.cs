@@ -1,6 +1,7 @@
 using ArturRios.Configuration.Loaders;
 using ArturRios.Configuration.Tests.TestHelpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace ArturRios.Configuration.Tests.Loaders;
 
@@ -19,9 +20,7 @@ public class ConfigurationLoaderEnvironmentTests
 
         scope.Set("HELLO", null);
 
-        var logger = LoggerFactory.Create(_ => { }).CreateLogger<ConfigurationLoader>();
-
-        var loader = new ConfigurationLoader("Local", dir.Root, logger);
+        var loader = Loader("Local", dir);
 
         loader.LoadEnvironment();
 
@@ -40,8 +39,7 @@ public class ConfigurationLoaderEnvironmentTests
 
         scope.Set("X", null);
 
-        var logger = LoggerFactory.Create(_ => { }).CreateLogger<ConfigurationLoader>();
-        var loader = new ConfigurationLoader("Development", dir.Root, logger);
+        var loader = Loader("Development", dir);
 
         loader.LoadEnvironment();
 
@@ -56,8 +54,7 @@ public class ConfigurationLoaderEnvironmentTests
 
         scope.Set("Y", null);
 
-        var logger = LoggerFactory.Create(_ => { }).CreateLogger<ConfigurationLoader>();
-        var loader = new ConfigurationLoader("Local", dir.Root, logger);
+        var loader = Loader("Local", dir);
 
         loader.LoadEnvironment();
 
@@ -69,7 +66,7 @@ public class ConfigurationLoaderEnvironmentTests
     // environment that has no file of its own, Production included.
 
     private static ConfigurationLoader Loader(string environmentName, TestDirectory dir) =>
-        new(environmentName, dir.Root, LoggerFactory.Create(_ => { }).CreateLogger<ConfigurationLoader>());
+        new(environmentName, dir.Root, NullLogger<ConfigurationLoader>.Instance);
 
     [Fact]
     public void GivenAVariableAlreadySet_WhenTheEnvironmentFileDefinesIt_ThenTheExistingValueIsKept()
@@ -167,5 +164,90 @@ public class ConfigurationLoaderEnvironmentTests
 
         Assert.Equal("prod.example.com", Environment.GetEnvironmentVariable("CFG_TEST_HOST"));
         Assert.Equal("https://prod.example.com/api", Environment.GetEnvironmentVariable("CFG_TEST_URL"));
+    }
+    [Fact]
+    public void GivenAnEnvironmentsFolderWithOnlyOtherFiles_WhenLoading_ThenNothingIsLoaded()
+    {
+        using var dir = new TestDirectory();
+
+        dir.WriteFile("Environments/.env", "CFG_TEST_OTHER=root");
+        dir.WriteFile("Environments/.env.staging", "CFG_TEST_OTHER=staging");
+
+        using var scope = new EnvVarScope();
+
+        scope.Set("CFG_TEST_OTHER", null);
+
+        Loader("Development", dir).LoadEnvironment();
+
+        Assert.Null(Environment.GetEnvironmentVariable("CFG_TEST_OTHER"));
+    }
+
+    [Fact]
+    public void GivenAMalformedEnvironmentFile_WhenLoading_ThenTheParseErrorIsThrown()
+    {
+        using var dir = new TestDirectory();
+
+        dir.WriteFile("Environments/.env.local", "CFG_TEST_DB=\"never closed");
+
+        using var scope = new EnvVarScope();
+
+        scope.Set("CFG_TEST_DB", null);
+
+        // The parser's own exception (Superpower.ParseException, through DotNetEnv) is not caught or wrapped, and no
+        // variable of the file is set.
+        Assert.ThrowsAny<Exception>(() => Loader("Local", dir).LoadEnvironment());
+        Assert.Null(Environment.GetEnvironmentVariable("CFG_TEST_DB"));
+    }
+
+    [Theory]
+    [InlineData("Development", "Development", "Loading variables for Development environment")]
+    [InlineData("local", "Development",
+        "Could not find variables for Development environment. " +
+        "Loading default environment Local instead")]
+    [InlineData(null, "Development", "Could not find any environment variables")]
+    public void GivenWhichFileExists_WhenLoading_ThenTheChoiceIsLoggedAsInformation(string? fileEnvironment,
+        string environmentName, string expected)
+    {
+        using var dir = new TestDirectory();
+
+        if (fileEnvironment is not null)
+        {
+            dir.WriteFile($"Environments/.env.{fileEnvironment}", string.Empty);
+        }
+
+        var logger = new RecordingLogger<ConfigurationLoader>();
+
+        new ConfigurationLoader(environmentName, dir.Root, logger).LoadEnvironment();
+
+        var (level, message) = Assert.Single(logger.Entries);
+        Assert.Equal(LogLevel.Information, level);
+        Assert.StartsWith(expected, message);
+    }
+
+    [Fact]
+    public void GivenNoBasePathAndNoLogger_WhenLoading_ThenTheApplicationBaseDirectoryIsUsed()
+    {
+        // A file in the test's own output folder, under an environment name and a key no other test uses.
+        var environmentName = "Probe" + Guid.NewGuid().ToString("N");
+        var key = "ARTURRIOS_CFG_" + Guid.NewGuid().ToString("N");
+        var file = Path.Combine(AppContext.BaseDirectory, "Environments", $".env.{environmentName}");
+
+        Directory.CreateDirectory(Path.GetDirectoryName(file)!);
+        File.WriteAllText(file, $"{key}=base-directory");
+
+        using var scope = new EnvVarScope();
+
+        scope.Set(key, null);
+
+        try
+        {
+            new ConfigurationLoader(environmentName).LoadEnvironment();
+
+            Assert.Equal("base-directory", Environment.GetEnvironmentVariable(key));
+        }
+        finally
+        {
+            File.Delete(file);
+        }
     }
 }
