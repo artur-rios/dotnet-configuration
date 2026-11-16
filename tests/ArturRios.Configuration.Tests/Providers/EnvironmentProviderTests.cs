@@ -1,11 +1,27 @@
 using ArturRios.Configuration.Providers;
 using ArturRios.Configuration.Tests.TestHelpers;
+using IConfigurationProvider = ArturRios.Configuration.Providers.Interfaces.IConfigurationProvider;
 
 namespace ArturRios.Configuration.Tests.Providers;
 
 [Trait("Category", "Unit")]
-public class EnvironmentProviderTests
+public class EnvironmentProviderTests : ConfigurationProviderContract
 {
+    private readonly EnvVarScope _contractScope = new();
+
+    protected override IConfigurationProvider ProviderWith(string key, string value)
+    {
+        _contractScope.Set(key, value);
+
+        return new EnvironmentProvider();
+    }
+
+    public override void Dispose()
+    {
+        _contractScope.Dispose();
+        base.Dispose();
+    }
+
     [Fact]
     public void GivenMissingEnvironmentVariable_WhenGettingValue_ThenReturnNull()
     {
