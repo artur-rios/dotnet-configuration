@@ -7,11 +7,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-11-19
+
+### Changed
+
+- `ArturRios.Extensions` updated from 1.4.1 to 1.4.2.
+
+### Fixed
+
+- The advanced-usage guide dates the "real environment variables win over the `.env` file" behaviour to 2.0.0, the
+  release that made it, instead of to a 1.3.0 that was never released.
+
 ## [2.0.1] - 2026-11-14
 
 ### Changed
 
 - `DotNetEnv` updated from 3.1.1 to 3.2.0.
+- `ArturRios.Extensions` updated from 1.4.0 to 1.4.1.
+- `Microsoft.Extensions.*` references updated from 10.0.11 to 10.0.15.
 
 ## [2.0.0] - 2026-10-29
 
@@ -68,7 +81,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `IConfigurationProvider`, the interface both providers implement, for writing your own.
 - `ConfigurationSourceType`, `DataFormatType`, `DataSource`, `EnvironmentType` and `OutputType` enums.
 
-[Unreleased]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.2...HEAD
+[2.0.2]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/artur-rios/dotnet-configuration/compare/1.2.0...2.0.0
 [1.2.0]: https://github.com/artur-rios/dotnet-configuration/compare/v1.1.0...1.2.0

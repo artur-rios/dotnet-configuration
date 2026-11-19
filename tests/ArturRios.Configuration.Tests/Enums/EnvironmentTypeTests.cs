@@ -17,9 +17,10 @@ public class EnvironmentTypeTests
     [Fact]
     public void GivenEnvironmentTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
-        Assert.Equal("Local", nameof(EnvironmentType.Local));
-        Assert.Equal("Development", nameof(EnvironmentType.Development));
-        Assert.Equal("Staging", nameof(EnvironmentType.Staging));
-        Assert.Equal("Production", nameof(EnvironmentType.Production));
+        // Every name, in value order: a member added, removed, renamed or moved fails the test. (nameof
+        // compared a name with itself, so it could never fail.)
+        Assert.Equal(
+            new[] { "Local", "Development", "Staging", "Production" },
+            Enum.GetNames<EnvironmentType>());
     }
 }

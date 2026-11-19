@@ -18,10 +18,10 @@ public class OutputTypeTests
     [Fact]
     public void GivenOutputTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
-        Assert.Equal("Void", nameof(OutputType.Void));
-        Assert.Equal("Default", nameof(OutputType.Default));
-        Assert.Equal("Primitive", nameof(OutputType.Primitive));
-        Assert.Equal("Object", nameof(OutputType.Object));
-        Assert.Equal("Exception", nameof(OutputType.Exception));
+        // Every name, in value order: a member added, removed, renamed or moved fails the test. (nameof
+        // compared a name with itself, so it could never fail.)
+        Assert.Equal(
+            new[] { "Void", "Default", "Primitive", "Object", "Exception" },
+            Enum.GetNames<OutputType>());
     }
 }

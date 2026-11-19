@@ -16,8 +16,10 @@ public class DataSourceTests
     [Fact]
     public void GivenDataSourceEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
-        Assert.Equal("Relational", nameof(DataSource.Relational));
-        Assert.Equal("NoSql", nameof(DataSource.NoSql));
-        Assert.Equal("InMemory", nameof(DataSource.InMemory));
+        // Every name, in value order: a member added, removed, renamed or moved fails the test. (nameof
+        // compared a name with itself, so it could never fail.)
+        Assert.Equal(
+            new[] { "Relational", "NoSql", "InMemory" },
+            Enum.GetNames<DataSource>());
     }
 }

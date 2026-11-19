@@ -16,8 +16,10 @@ public class ConfigurationSourceTypeTests
     [Fact]
     public void GivenConfigurationSourceTypeEnum_WhenCheckingNames_ThenShouldHaveExpectedNames()
     {
-        Assert.Equal("EnvFile", nameof(ConfigurationSourceType.EnvFile));
-        Assert.Equal("AppSettings", nameof(ConfigurationSourceType.AppSettings));
-        Assert.Equal("EnvironmentVariables", nameof(ConfigurationSourceType.EnvironmentVariables));
+        // Every name, in value order: a member added, removed, renamed or moved fails the test. (nameof
+        // compared a name with itself, so it could never fail.)
+        Assert.Equal(
+            new[] { "EnvFile", "AppSettings", "EnvironmentVariables" },
+            Enum.GetNames<ConfigurationSourceType>());
     }
 }

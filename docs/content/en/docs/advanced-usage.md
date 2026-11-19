@@ -33,14 +33,14 @@ When building `IConfiguration`, sources are added in the order you call them on 
 `Environments/.env.local`. The two are never layered, so a key that is only in `.env.local` is not loaded when
 the environment has its own file.
 
-**Variables the process already has win over the file** (since 1.3.0). A key that is already set — by the
+**Variables the process already has win over the file** (since 2.0.0). A key that is already set — by the
 container, the orchestrator, the shell, CI — is left alone, so a `.env` file shipped with the build can't
 override what the deployment injected. That matters most for the `.env.local` fallback, which is loaded for any
 environment that has no file of its own, Production included. Two consequences of this "never overwrite" rule
 (DotNetEnv's `clobberExistingVars: false`):
 
 - A key repeated within one file keeps its **first** value: once the first line has set it, the later ones find
-  it already set. Before 1.3.0 the last one won. Don't repeat keys.
+  it already set. Before 2.0.0 the last one won. Don't repeat keys.
 - A `${VAR}` reference in the file resolves to the value actually in effect: with `DB_HOST` injected by the
   deployment and `DB_URL=postgres://${DB_HOST}/app` in the file, `DB_URL` points at the injected host.
 

@@ -18,10 +18,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>utilities</PackageTags>
     <RepositoryUrl>https://github.com/artur-rios/dotnet-configuration</RepositoryUrl>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ArturRios.Extensions" Version="1.4.1" />
+    <PackageReference Include="ArturRios.Extensions" Version="1.4.2" />
     <PackageReference Include="DotNetEnv" Version="3.2.0"/>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.15"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.15"/>
