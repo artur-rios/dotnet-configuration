@@ -7,9 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-11-19
+
 ### Changed
 
-- `ArturRios.Extensions` updated from 1.4.2 to 1.4.3.
+- `ArturRios.Extensions` updated from 1.4.2 to 1.4.4.
 
 ## [2.0.2] - 2026-11-19
 
@@ -85,7 +87,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `IConfigurationProvider`, the interface both providers implement, for writing your own.
 - `ConfigurationSourceType`, `DataFormatType`, `DataSource`, `EnvironmentType` and `OutputType` enums.
 
-[Unreleased]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.2...HEAD
+[Unreleased]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.3...HEAD
+[2.0.3]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/artur-rios/dotnet-configuration/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/artur-rios/dotnet-configuration/compare/1.2.0...2.0.0
