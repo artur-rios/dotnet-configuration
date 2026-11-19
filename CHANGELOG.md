@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `ArturRios.Extensions` updated from 1.4.1 to 1.4.2.
+
+### Fixed
+
+- The advanced-usage guide dates the "real environment variables win over the `.env` file" behaviour to 2.0.0, the
+  release that made it, instead of to a 1.3.0 that was never released.
+
 ## [2.0.1] - 2026-11-14
 
 ### Changed
